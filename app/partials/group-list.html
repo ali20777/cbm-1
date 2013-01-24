@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="well clearfix">
+    <h1>Condition Based Maintenance Groups</h1>
+    <p>Select a CBM group below to see maintenance recommendations for sample runs</p>
+
+    <div class="span11">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Point Aggregation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="group in groups">
+            <td><a href="#/groups/{{group.id}}">{{group.name}}</a></td>
+            <td>{{group.description}}</td>
+            <td>{{group.type}}</td>
+            <td>{{group.aggregation}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

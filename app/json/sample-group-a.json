@@ -1,0 +1,80 @@
+{
+  "triggers": [
+    {
+      "level": 1,
+      "points": 1000
+    },
+    {
+      "level": 2,
+      "points": 2000
+    },
+    {
+      "level": 3,
+      "points": 3000
+    },
+    {
+      "level": 4,
+      "points": 4000
+    },
+    {
+      "level": "Scrap",
+      "points": 5000
+    }
+  ],
+  "measurements": [
+    {
+      "id": "circulating-time",
+      "name": "Circulating Time",
+      "units": "Hours",
+      "factor": 7,
+      "offset": 0,
+      "lower": 0,
+      "upper": 10
+    },
+    {
+      "id": "maximum-temperature",
+      "name": "Maximum Temperature",
+      "units": "Deg C",
+      "factor": 2.1,
+      "offset": 0,
+      "lower": 0,
+      "upper": 5
+    },
+    {
+      "id": "time",
+      "name": "Time",
+      "units": "Days",
+      "factor": 34.5,
+      "offset": 0,
+      "lower": 0,
+      "upper": 50
+    },
+    {
+      "id": "distance-drilled",
+      "name": "Distance Drilled",
+      "units": "Feet",
+      "factor": 0.25,
+      "offset": 0,
+      "lower": 0,
+      "upper": 1
+    }
+  ],
+  "runs": [
+    {
+      "measurement": "circulating-time",
+      "values": [100, 150, 0, 0]
+    },
+    {
+      "measurement": "maximum-temperature",
+      "values": [300, 0, 500, 0]
+    },
+    {
+      "measurement": "time",
+      "values": [15, 0, 0, 30]
+    },
+    {
+      "measurement": "distance-drilled",
+      "values": [1000, 500, 0, 0]
+    }
+  ]
+}

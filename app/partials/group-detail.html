@@ -1,0 +1,152 @@
+<!-- get the group setup fields back on this page
+<div class="row">
+  <div class="well clearfix">
+    <h1>Group Setup</h1>
+    <p>Specify how the condition based maintenance group should be configured.</p>
+
+    <div class="span6">
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for="group-name">Group Name</label>
+          <div class="controls">
+            <input type="text" id="group-name" placeholder="Group Name" value="Sample Group A">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="group-description">Group Description</label>
+          <div class="controls">
+            <textarea id="group-description" rows="3">This is a sample group for tinkering with CBM values</textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="span5">
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for="group-type">Group Type</label>
+          <div class="controls">
+            <datalist id="group-type">
+              <option value="Calibration">
+              <option value="Inspection">
+              <option value="Preventative Maintenance">
+            </datalist>
+            <input type="text" id="group-type" placeholder="Group Type" list="group-type" value="Preventative Maintenance">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="group-point-aggregation">Group Point Aggregation</label>
+          <div class="controls">
+            <datalist id="point-aggregation">
+              <option value="Use Maximum Value">
+              <option value="Sum Up All Values">
+            </datalist>
+            <input type="text" id="group-point-aggregation" placeholder="Point Aggregation" list="point-aggregation" value="Sum Up All Values">
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+-->
+<div class="row">
+  <div class="well clearfix">
+    <h1>Run Measurements and Trigger Levels</h1>
+    <p>Provide measurements for various environments to determine resulting maintenance triggered.</p>
+
+    <div class="span8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Measurement</th>
+            <th>Units</th>
+            <th>Run 1</th>
+            <th>Run 2</th>
+            <th>Run 3</th>
+            <th>Run 4</th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="measurement in group.measurements">
+            <td><input type="text" class="input-medium" ng-model="measurement.name"></td>
+            <td><input type="text" class="input-mini" ng-model="measurement.units"></td>
+            <td ng-repeat="value in group.runs[$index].values">
+              <input type="text" class="input-nano" ng-model="value">
+            </td>
+            <td>
+              <a href="" ng-click="deleteMeasurement($index)"><i class="icon-remove"></i></a>
+            </td>
+          </tr>
+          <tr>
+            <form ng-submit="addMeasurement()">
+              <td><input type="text" class="input-medium" ng-model="measurementName" placeholder="Add measurement"></td>
+              <td><input type="text" class="input-mini" ng-model="measurementUnits" placeholder="Units"></td>
+              <td colspan="4"><input class="btn-primary" type="submit" value="Add"></td>
+            </form>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="span3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="trigger in group.triggers">
+            <td><input type="text" class="input-mini" ng-model="trigger.level"></td>
+            <td><input type="text" class="input-mini" ng-model="trigger.points"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="well clearfix">
+    <h1>Normalization Factors and Offsets</h1>
+    <p>The resulting formula will be points = (factor * measurement) + offset.</p>
+
+    <div class="span11">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Measurement (units)</th>
+            <th>Factor</th>
+            <th>Offset</th>
+            <th>Lower Bound</th>
+            <th>Adjust Normalization</th>
+            <th>Upper Bound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="measurement in group.measurements">
+            <td>{{measurement.name}} ({{measurement.units}})</td>
+            <td>{{measurement.factor}}</td>
+            <td><input type="text" class="input-nano" ng-model="measurement.offset"></td>
+            <td><input type="text" class="input-nano" ng-model="measurement.lower"></td>
+            <td><input type="range" ng-model="measurement.factor" min="{{measurement.lower}}" max="{{measurement.upper}}"></td>
+            <td><input type="text" class="input-nano" ng-model="measurement.upper"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <h1>Maintenance Recommendations for Sample Runs</h1>
+  <p>Adjust the normalization factors and offsets above to see maintenance recommendations for sample runs. <a href="" ng-click="calculatePoints()">Recalculate</a>.</p>
+
+  <chart ng-model="group"></chart>
+
+</div>
