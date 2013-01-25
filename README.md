@@ -1,16 +1,4 @@
-@todo
-* graph is not displaying correctly - measurement 1 displayed as run 1
-* event handling
-* dependency injection services
-* group detail page binded to group also
-* sample data for group b and c
-* clean up graph
-
-@done
-* range control
-* editable values
-* CRUD measurements
-* add graph
+# Condition Based Maintenance
 
 ## Data Structures
 
