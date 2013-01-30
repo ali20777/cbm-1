@@ -47,16 +47,16 @@ function GroupDetailController($scope, $routeParams, $http) {
     var i,
       points = [],
       currentMeasurement,
-      measurementValue,
       numberOfMeasurements = $scope.group.measurements.length,
-      currentRun = $scope.group.runs[index];
+      currentRun = $scope.group.runs[index],
+      value;
 
     console.log('begin calculatePointsForRun with index ' + index);
 
     for (i = 0; i < numberOfMeasurements; i++) {
       currentMeasurement = $scope.group.measurements[i];
-      measurementValue = currentRun.values[i];
-      points[i] = currentMeasurement.factor * measurementValue + currentMeasurement.offset;
+      value = currentRun[i];
+      points[i] = currentMeasurement.factor * value + currentMeasurement.offset;
     }
 
     console.log(points);
@@ -65,51 +65,16 @@ function GroupDetailController($scope, $routeParams, $http) {
     return points;
   };
 
-  $scope.calculatePointsForMeasurement = function (index) {
-    var i,
-      points = [],
-      measurement = $scope.group.measurements[index],
-      factor = measurement.factor,
-      offset = measurement.offset,
-      value,
-      values = $scope.group.runs[index].values,
-      numberOfRuns = 4;
-
-    console.log('begin calculatePointsForMeasurement with index ' + index);
-
-    for (i = 0; i < numberOfRuns; i++) {
-      value = values[i];
-      points[i] = factor * value + offset;
-    }
-
-    console.log(points);
-    console.log('end calculatePointsForMeasurement');
-
-    return points;
-  };
-
   $scope.calculatePoints = function () {
-    // for finding points based on a measurement
-    var i,
-      points = [],
-      numberOfMeasurements = $scope.group.measurements.length;
-
-    for (i = 0; i < numberOfMeasurements; i++) {
-      points.push($scope.calculatePointsForMeasurement(i));
-    }
-
-    /* for finding points based on a run
     var i,
       points = [],
       numberOfRuns = 4;
+
+    console.log('begin calculatePoints');
 
     for (i = 0; i < numberOfRuns; i++) {
       points.push($scope.calculatePointsForRun(i));
     }
-    */
-
-    console.log('end calculatePoints');
-    console.log(points);
 
     $scope.group.points = points;
 
@@ -121,6 +86,9 @@ function GroupDetailController($scope, $routeParams, $http) {
       [80, 500, 600, 700]
     ];
     */
+
+    console.log('end calculatePoints');
+    console.log(points);
   };
   
   $scope.$watch('group.measurements', function (newValue, oldValue) {
