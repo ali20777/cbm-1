@@ -1,8 +1,7 @@
 {
   "setup": {
-    "id": "sample-group-a",
-    "name": "Sample Group A",
-    "description": "This is a sample group to demo CBM group setup",
+    "name": "Run Intensity Range",
+    "description": "Runs of high, medium, and low intensity",
     "type": "Preventative Maintenance",
     "aggregation": "Sum Up All Values"
   },

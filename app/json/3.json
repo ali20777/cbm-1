@@ -1,0 +1,47 @@
+{
+  "setup": {
+    "name": "Time Elapsed",
+    "description": "Uses only time elapsed measurement",
+    "type": "Preventative Maintenance",
+    "aggregation": "Sum Up All Values"
+  },
+  "triggers": [
+    {
+      "level": 1,
+      "points": 1000
+    },
+    {
+      "level": 2,
+      "points": 2000
+    },
+    {
+      "level": 3,
+      "points": 3000
+    },
+    {
+      "level": 4,
+      "points": 4000
+    },
+    {
+      "level": "Scrap",
+      "points": 5000
+    }
+  ],
+  "measurements": [
+    {
+      "id": "time",
+      "name": "Time",
+      "units": "Days",
+      "factor": 10,
+      "offset": 0,
+      "lower": 0,
+      "upper": 100
+    }
+  ],
+  "runs": [
+    [   30],
+    [   60],
+    [  120],
+    [ 1090]
+  ]
+}

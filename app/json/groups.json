@@ -1,22 +1,22 @@
 [
   {
-    "id": "sample-group-a",
-    "name": "Sample Group A",
-    "description": "This is a sample group to demo CBM group setup",
+    "id": 1,
+    "name": "Run Intensity Range",
+    "description": "Runs of high, medium, and low intensity",
     "type": "Preventative Maintenance",
     "aggregation": "Sum Up All Values"
   },
   {
-    "id": "sample-group-b",
-    "name": "Sample Group B",
-    "description": "This is another sample group for exploring CBM group setup",
+    "id": 2,
+    "name": "Verify Calculations",
+    "description": "Group with round values to verify calculations",
     "type": "Preventative Maintenance",
     "aggregation": "Sum Up All Values"
   },
   {
-    "id": "sample-group-c",
-    "name": "Sample Group C",
-    "description": "Another sample group, keep on tinkering with values",
+    "id": 3,
+    "name": "Time Elapsed",
+    "description": "Uses only time elapsed measurement",
     "type": "Preventative Maintenance",
     "aggregation": "Sum Up All Values"
   }
