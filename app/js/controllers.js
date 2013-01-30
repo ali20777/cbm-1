@@ -121,8 +121,7 @@ function GroupDetailController($scope, $routeParams, $http) {
     */
   };
   
-  /* this doesn't seem to be working
-  $scope.$watch($scope.group.measurements, function (newValue, oldValue) {
+  $scope.$watch('group.measurements', function (newValue, oldValue) {
     console.log('watching');
     if (newValue === oldValue) {
       return;
@@ -131,5 +130,5 @@ function GroupDetailController($scope, $routeParams, $http) {
     console.log(newValue);
     $scope.calculatePoints();
   }, true);
-  */
+
 }
