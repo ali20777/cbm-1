@@ -1,4 +1,3 @@
-<!-- get the group setup fields back on this page
 <div class="row">
   <div class="well clearfix">
     <h1>Group Setup</h1>
@@ -7,15 +6,15 @@
     <div class="span6">
       <form class="form-horizontal">
         <div class="control-group">
-          <label class="control-label" for="group-name">Group Name</label>
+          <label class="control-label" for="group-name">Name</label>
           <div class="controls">
-            <input type="text" id="group-name" placeholder="Group Name" value="Sample Group A">
+            <input type="text" id="group-name" placeholder="Name" ng-model="group.setup.name">
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label" for="group-description">Group Description</label>
+          <label class="control-label" for="group-description">Description</label>
           <div class="controls">
-            <textarea id="group-description" rows="3">This is a sample group for tinkering with CBM values</textarea>
+            <textarea id="group-description" rows="3" ng-model="group.setup.description"></textarea>
           </div>
         </div>
       </form>
@@ -24,24 +23,24 @@
     <div class="span5">
       <form class="form-horizontal">
         <div class="control-group">
-          <label class="control-label" for="group-type">Group Type</label>
+          <label class="control-label" for="group-type">Type</label>
           <div class="controls">
             <datalist id="group-type">
               <option value="Calibration">
               <option value="Inspection">
               <option value="Preventative Maintenance">
             </datalist>
-            <input type="text" id="group-type" placeholder="Group Type" list="group-type" value="Preventative Maintenance">
+            <input type="text" id="group-type" placeholder="Type" list="group-type" ng-model="group.setup.type">
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label" for="group-point-aggregation">Group Point Aggregation</label>
+          <label class="control-label" for="group-point-aggregation">Point Aggregation</label>
           <div class="controls">
             <datalist id="point-aggregation">
               <option value="Use Maximum Value">
               <option value="Sum Up All Values">
             </datalist>
-            <input type="text" id="group-point-aggregation" placeholder="Point Aggregation" list="point-aggregation" value="Sum Up All Values">
+            <input type="text" id="group-point-aggregation" placeholder="Point Aggregation" list="point-aggregation" ng-model="group.setup.aggregation">
           </div>
         </div>
       </form>
@@ -49,7 +48,7 @@
 
   </div>
 </div>
--->
+
 <div class="row">
   <div class="well clearfix">
     <h1>Run Measurements and Trigger Levels</h1>
@@ -61,10 +60,7 @@
           <tr>
             <th>Measurement</th>
             <th>Units</th>
-            <th>Run 1</th>
-            <th>Run 2</th>
-            <th>Run 3</th>
-            <th>Run 4</th>
+            <th ng-repeat="i in group.runs">Run {{$index + 1}}</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -72,9 +68,11 @@
           <tr ng-repeat="measurement in group.measurements">
             <td><input type="text" class="input-medium" ng-model="measurement.name"></td>
             <td><input type="text" class="input-mini" ng-model="measurement.units"></td>
-            <td ng-repeat="value in group.runs[$index].values">
-              <input type="text" class="input-nano" ng-model="value">
-            </td>
+            <!-- hard coded 4 runs right now so this loop is easy -->
+            <td><input type="text" class="input-nano" ng-model="group.runs[0][$index]"></td>
+            <td><input type="text" class="input-nano" ng-model="group.runs[1][$index]"></td>
+            <td><input type="text" class="input-nano" ng-model="group.runs[2][$index]"></td>
+            <td><input type="text" class="input-nano" ng-model="group.runs[3][$index]"></td>
             <td>
               <a href="" ng-click="deleteMeasurement($index)"><i class="icon-remove"></i></a>
             </td>

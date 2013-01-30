@@ -28,6 +28,7 @@ function GroupDetailController($scope, $routeParams, $http) {
       'lower': 0,
       'upper': 10
     });
+    // TODO: needs to push a 0 to the end of each run array
     $scope.group.runs.push({
       'measurement': measurementId,
       'values': [0, 0, 0, 0]
@@ -38,6 +39,7 @@ function GroupDetailController($scope, $routeParams, $http) {
 
   $scope.deleteMeasurement = function (index) {
     $scope.group.measurements.splice(index, 1);
+    // TODO: needs to splice on each run array
     $scope.group.runs.splice(index, 1);
   };
 
