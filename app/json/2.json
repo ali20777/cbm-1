@@ -29,7 +29,6 @@
   ],
   "measurements": [
     {
-      "id": "circulating-time",
       "name": "Circulating Time",
       "units": "Hours",
       "factor": 1,
@@ -38,7 +37,6 @@
       "upper": 10
     },
     {
-      "id": "maximum-temperature",
       "name": "Maximum Temperature",
       "units": "Deg F",
       "factor": 2,
@@ -47,7 +45,6 @@
       "upper": 20
     },
     {
-      "id": "time",
       "name": "Time",
       "units": "Days",
       "factor": 3,
@@ -56,7 +53,6 @@
       "upper": 30
     },
     {
-      "id": "distance-drilled",
       "name": "Distance Drilled",
       "units": "Feet",
       "factor": 4,
@@ -65,7 +61,6 @@
       "upper": 40
     },
     {
-      "id": "maximum-pressure",
       "name": "Maximum Pressure",
       "units": "Psi",
       "factor": 5,

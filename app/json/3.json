@@ -29,7 +29,6 @@
   ],
   "measurements": [
     {
-      "id": "time",
       "name": "Time",
       "units": "Days",
       "factor": 10,

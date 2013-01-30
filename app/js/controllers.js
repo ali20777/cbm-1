@@ -1,5 +1,5 @@
 /*jslint plusplus: true */
-/*global console*/
+/*global console, angular*/
 
 function GroupController($scope, $http) {
   'use strict';
@@ -18,9 +18,8 @@ function GroupDetailController($scope, $routeParams, $http) {
   });
 
   $scope.addMeasurement = function () {
-    var measurementId = $scope.measurementName.trim().replace(' ', '-');
+    // add the new measurement
     $scope.group.measurements.push({
-      'id': measurementId,
       'name': $scope.measurementName,
       'units': $scope.measurementUnits,
       'factor': 0,
@@ -28,19 +27,25 @@ function GroupDetailController($scope, $routeParams, $http) {
       'lower': 0,
       'upper': 10
     });
-    // TODO: needs to push a 0 to the end of each run array
-    $scope.group.runs.push({
-      'measurement': measurementId,
-      'values': [0, 0, 0, 0]
+
+    // set a default value for the new measurement to each run
+    angular.forEach($scope.group.runs, function (value, index) {
+      $scope.group.runs[index].push(0);
     });
+
+    // reset the input fields
     $scope.measurementName = '';
     $scope.measurementUnits = '';
   };
 
   $scope.deleteMeasurement = function (index) {
+    // remove the measurement
     $scope.group.measurements.splice(index, 1);
-    // TODO: needs to splice on each run array
-    $scope.group.runs.splice(index, 1);
+
+    // remove the measurement value from each run
+    angular.forEach($scope.group.runs, function (value, i) {
+      $scope.group.runs[i].splice(index, 1);
+    });
   };
 
   $scope.calculatePointsForRun = function (index) {
@@ -51,7 +56,7 @@ function GroupDetailController($scope, $routeParams, $http) {
       currentRun = $scope.group.runs[index],
       value;
 
-    console.log('begin calculatePointsForRun with index ' + index);
+    // console.log('begin calculatePointsForRun with index ' + index);
 
     for (i = 0; i < numberOfMeasurements; i++) {
       currentMeasurement = $scope.group.measurements[i];
@@ -59,8 +64,8 @@ function GroupDetailController($scope, $routeParams, $http) {
       points[i] = currentMeasurement.factor * value + currentMeasurement.offset;
     }
 
-    console.log(points);
-    console.log('end calculatePointsForRun');
+    // console.log(points);
+    // console.log('end calculatePointsForRun');
 
     return points;
   };
@@ -70,7 +75,7 @@ function GroupDetailController($scope, $routeParams, $http) {
       points = [],
       numberOfRuns = 4;
 
-    console.log('begin calculatePoints');
+    // console.log('begin calculatePoints');
 
     for (i = 0; i < numberOfRuns; i++) {
       points.push($scope.calculatePointsForRun(i));
@@ -87,17 +92,17 @@ function GroupDetailController($scope, $routeParams, $http) {
     ];
     */
 
-    console.log('end calculatePoints');
-    console.log(points);
+    // console.log('end calculatePoints');
+    // console.log(points);
   };
-  
+
   $scope.$watch('group.measurements', function (newValue, oldValue) {
-    console.log('watching');
+    // console.log('watching');
     if (newValue === oldValue) {
       return;
     }
-    console.log('found a change');
-    console.log(newValue);
+    // console.log('found a change');
+    // console.log(newValue);
     $scope.calculatePoints();
   }, true);
 
