@@ -9,12 +9,15 @@ cbmModule.directive('chart', function () {
       // initialization, done once per tag in the template
 
       var data = angular.element(element.children()[0]),
-        width = 960,
-        height = 600,
-        chart = d3.select(element[0])
+        margin = {'top': 20, 'right': 20, 'bottom': 60, 'left': 40},
+        width = 960 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom,
+        svg = d3.select(element[0])
                     .append('svg')
-                    .attr('width', width)
-                    .attr('height', height);
+                      .attr('width', width + margin.left + margin.right)
+                      .attr('height', height + margin.top + margin.bottom)
+                    .append('g') // group element
+                      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
       // whenever the model changes, execute this
       scope.$watch(attributes.ngModel, function (newValue, oldValue) {
@@ -25,90 +28,74 @@ cbmModule.directive('chart', function () {
         }
 
         // clear the elements inside the directive
-        chart.selectAll('*').remove();
+        svg.selectAll('*').remove();
 
-        var w = 800,
-          h = 400,
-          padding = 10,
-          barWidth = 40,
-          bottom = h - 2 * padding,
-          colors = ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
-                    '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', '#2F4F4F'],
-          numberOfRuns = 4,
-          upperDomain = 2000,
-          // domain is range of possible input data values
-          // range is possible output values
-          x = d3.scale.linear().domain([0, numberOfRuns + 1]).range([0, w - padding * 2]),
-          y = d3.scale.linear().domain([0, upperDomain]).range([bottom, 0]),
-          points = newValue.points,
-          /*
-          points = [{a: value['points'][0][0], b: 8, c: 15},
-                    {a: value['points'][1][0], b: 23, c: 42},
-                    {a: value['points'][2][0], b: 48, c: 1},
-                    {a: value['points'][3][0], b: 12, c: 18}],
-          
-          points = [{a: 4, b: 8, c: 15},
-                    {a: 16, b: 23, c: 42},
-                    {a: 12, b: 48, c: 1},
-                    {a: 40, b: 12, c: 18}],
-          */
-          bars1 = chart.selectAll('rect')
-                      .data(points)
-                    .enter().append('svg:rect')
-                      .attr('fill', colors[0])
-                      .attr('x', function (d, i) { return x(i); })
-                      .attr('y', function (d) { return y(d[0]); })
-                      .attr('width', barWidth)
-                      .attr('height', function (d) { return bottom - y(d[0]); }),
-          rules = chart.selectAll('g.rule')
-                      .data(points)
-                    .enter().append('svg:g')
-                      .attr('class', 'rule');
+        var measurements = [],
+          x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1),
+          y = d3.scale.linear().rangeRound([height, 0]),
+          xAxis = d3.svg.axis().scale(x).orient("bottom"),
+          yAxis = d3.svg.axis().scale(y).orient("left"),
+          color = d3.scale.category20(),
+          legend,
+          run;
 
-        // second data series
-        rules.append('svg:rect')
-          .attr('fill', colors[1])
-          .attr('x', function (d, i) { return x(i); })
-          .attr('y', function (d) { return y(d[1]) - (bottom - y(d[0])); })
-          .attr('width', barWidth)
-          .attr('height', function (d) { return bottom - y(d[1]); });
+        data = newValue.points;
+        angular.forEach(data[0].points, function (value, index) {
+          measurements.push(value.measurement);
+        });
 
-        // third data series
-        rules.append('svg:rect')
-          .attr('fill', colors[2])
-          .attr('x', function (d, i) { return x(i); })
-          .attr('y', function (d) { return y(d[2]) - (bottom - y(d[0])) - (bottom - y(d[1])); })
-          .attr('width', barWidth)
-          .attr('height', function (d) { return bottom - y(d[2]); });
+        x.domain(data.map(function (d) { return 'Run ' + d.run; }));
+        y.domain([0, d3.max(data, function (d) { return d.total; })]);
+        color.domain(measurements);
 
-        // fourth data series
-        rules.append('svg:rect')
-          .attr('fill', colors[3])
-          .attr('x', function (d, i) { return x(i); })
-          .attr('y', function (d) { return y(d[3]) - (bottom - y(d[2])) - (bottom - y(d[0])) - (bottom - y(d[1])); })
-          .attr('width', barWidth)
-          .attr('height', function (d) { return bottom - y(d[3]); });
+        svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
 
-        // horizontal axis
-        rules.append('svg:text')
-          .attr('y', h)
-          .attr('x', function (d, i) { return x(i) + (2 * padding); })
-          .attr('dy', '.35em')
-          .attr('text-anchor', 'middle')
-          .text(function (d, i) { return 'Run ' + (i + 1); });
-
-        /* vertical axis
-        var yAxis = d3.svg.axis()
-                    .scale(y)
-                    .tickSize(1)
-                    .ticks(5)
-                    .orient('left');
-
-        chart.append('g')
-          .attr('class', 'axis')
-          .attr('transform', 'translate(' + padding + ', 0)')
+        svg.append("g")
+          .attr("class", "y axis")
           .call(yAxis);
-        */
+
+        svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .text("Points");
+
+        run = svg.selectAll(".run")
+          .data(data)
+          .enter().append("g")
+          .attr("class", "g")
+          .attr("transform", function (d) { return "translate(" + x(d.run) + ",0)"; });
+
+        run.selectAll("rect")
+          .data(function (d) { return d.points; })
+          .enter().append("rect")
+          .attr("width", x.rangeBand())
+          .attr("y", function (d) { return y(d.y1); })
+          .attr("height", function (d) { return y(d.y0) - y(d.y1); })
+          .style("fill", function (d, i) { return color(d.measurement); });
+
+        legend = svg.selectAll(".legend")
+          .data(measurements.slice().reverse())
+          .enter().append("g")
+          .attr("class", "legend")
+          .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+
+        legend.append("rect")
+          .attr("x", width - 18)
+          .attr("width", 18)
+          .attr("height", 18)
+          .style("fill", color);
+
+        legend.append("text")
+          .attr("x", width - 24)
+          .attr("y", 9)
+          .attr("dy", ".35em")
+          .style("text-anchor", "end")
+          .text(function (d) { return d; });
 
       }, true); // pass true to watch object's properties
     }

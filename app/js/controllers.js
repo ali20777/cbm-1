@@ -50,24 +50,51 @@ function GroupDetailController($scope, $routeParams, $http) {
 
   $scope.calculatePointsForRun = function (index) {
     var i,
-      points = [],
+      runPoints = {
+        'run': index + 1,
+        'total': 0,
+        'points': []
+      },
+      measurement,
+      value,
+      y0,
+      y1,
+      total = 0,
+      measurementValue,
       currentMeasurement,
       numberOfMeasurements = $scope.group.measurements.length,
-      currentRun = $scope.group.runs[index],
-      value;
+      currentRun = $scope.group.runs[index];
 
-    // console.log('begin calculatePointsForRun with index ' + index);
+    console.log('begin calculatePointsForRun with index ' + index);
 
     for (i = 0; i < numberOfMeasurements; i++) {
       currentMeasurement = $scope.group.measurements[i];
-      value = currentRun[i];
-      points[i] = currentMeasurement.factor * value + currentMeasurement.offset;
+      measurementValue = currentRun[i];
+
+      // points for this measurement
+      measurement = currentMeasurement.name;
+      value = currentMeasurement.factor * measurementValue + currentMeasurement.offset;
+      y0 = total;
+      y1 = total + value;
+
+      // add the points to the array
+      runPoints.points.push({
+        'measurement': measurement,
+        'value': value,
+        'y0': y0,
+        'y1': y1
+      });
+
+      // save the new total
+      total = y1;
     }
 
-    // console.log(points);
-    // console.log('end calculatePointsForRun');
+    runPoints.total = total;
 
-    return points;
+    console.log(runPoints);
+    console.log('end calculatePointsForRun');
+
+    return runPoints;
   };
 
   $scope.calculatePoints = function () {
