@@ -102,7 +102,7 @@ For each run, user enters desired level of maintenance then use linear algebra t
 * let _g_ be the number of sample runs used to create rules
 * let _k_ be the index of maintenance levels
 * let _h_ be the number of maintenance levels, where 0 < _h_ <= 5
-* let _t_ = [_t<sub>1</sub>_, ..., _t<sub>j</sub>_] be the point values needed to trigger each maintenance level
+* let _t_ = [_t_<sub>_1_</sub>, ..., _t_<sub>_j_</sub>] be the point values needed to trigger each maintenance level
 * let _m_ = [_m<sub>1</sub>_, ..., _m<sub>n</sub>_] be the set of measurements
 * let _f_ = [_f<sub>1</sub>_, ..., _f<sub>n</sub>_] be the set of factors for measurement _i_
 * let _o_ = [_o<sub>1</sub>_, ..., _o<sub>n</sub>_] be the set of offsets for measurement _i_
